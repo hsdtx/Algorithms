@@ -43,3 +43,38 @@ class Solution:
 ```
 
 ## 初等数学
+实际上，从链表的第一位往后遍历，然后把各位相加正好符合数学中加法的操作，因此无需转换数字。其中需要注意进位的情情况。
+```Python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        res = index = ListNode(None)
+        flag = 0
+        while l1 != None or l2 != None:
+            if l1 != None and l2 != None:
+                index.next = ListNode((l1.val + l2.val + flag) % 10)
+                flag = int((l1.val + l2.val + flag) / 10)
+                l1, l2 = l1.next, l2.next
+                index = index.next
+            if l1 != None and l2 == None:
+                index.next = ListNode((l1.val + flag) % 10)
+                flag = int((l1.val + flag)/10)
+                l1 = l1.next
+                index = index.next
+            if l2 != None and l1 == None:
+                index.next = ListNode((l2.val + flag) % 10)
+                flag = int((l2.val + flag)/10)
+                l2 = l2.next
+                index = index.next
+            
+        if flag != 0:
+            index.next = ListNode(flag)
+        
+        res = res.next
+        return res
+```
